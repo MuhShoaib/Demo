@@ -6,20 +6,6 @@ import 'dart:convert';
 
 import 'album.dart';
 
-
-
-Future<Album> fetch() async {
-  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-
-  // Appropriate action depending upon the
-  // server response
-  if (response.statusCode == 200) {
-    return Album.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load album');
-  }
-}
-
 Future<List<Album>> fetchAlbum() async {
   final response = await http.get(
     Uri.parse('https://jsonplaceholder.typicode.com/albums'),
