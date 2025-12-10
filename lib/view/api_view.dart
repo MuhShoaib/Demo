@@ -1,4 +1,6 @@
 import 'package:demo/service/api.dart';
+import 'package:demo/view/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../model/product.dart';
 
@@ -23,6 +25,23 @@ class _ProductViewState extends State<ProductView> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return LoginView();
+                  },
+                ),
+              );
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
         title: const Text(
           'Products',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -75,20 +94,48 @@ class _ProductViewState extends State<ProductView> {
 
           if (snapshot.hasData) {
             final products = snapshot.data!;
+
+            // String? image = FirebaseAuth.instance.currentUser!.photoURL;
+            String? name = FirebaseAuth.instance.currentUser!.displayName;
+            String? email = FirebaseAuth.instance.currentUser!.email;
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.7,
-                ),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final product = products[index];
-                  return ProductCard(product: product);
-                },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                     // image!=null ?CircleAvatar(backgroundImage: NetworkImage(image!)):SizedBox(),
+
+                      SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          // Text(name!),
+
+                          Text(email!)],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 0.7,
+                          ),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return ProductCard(product: product);
+                      },
+                    ),
+                  ),
+                ],
               ),
             );
           }
