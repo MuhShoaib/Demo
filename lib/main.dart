@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'album.dart';
+import 'demo/home.dart';
 import 'firebase_options.dart';
 
 Future<List<Album>> fetchAlbum() async {
@@ -38,10 +39,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: FirebaseAuth.instance.currentUser != null
-          ? ProductView()
-          : LoginView(),
+
+      home:HomeView()
+      // home: FirebaseAuth.instance.currentUser != null
+      //     ? ProductView()
+      //     : LoginView(),
     );
   }
 }
@@ -98,3 +102,6 @@ class _MyHomeState extends State<MyHome> {
     );
   }
 }
+
+
+
