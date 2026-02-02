@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'album.dart';
 import 'demo/home.dart';
+import 'demo/utils/size_utils.dart';
 import 'firebase_options.dart';
 
 Future<List<Album>> fetchAlbum() async {
@@ -38,15 +39,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-
-      home:HomeView()
-      // home: FirebaseAuth.instance.currentUser != null
-      //     ? ProductView()
-      //     : LoginView(),
+    return Sizer(
+      builder: (context, orientation, deviceType) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: MaterialApp(debugShowCheckedModeBanner: false, home: HomeView()),
+      ),
     );
+
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   title: 'Flutter Demo',
+    //
+    //   home:HomeView()
+    //   // home: FirebaseAuth.instance.currentUser != null
+    //   //     ? ProductView()
+    //   //     : LoginView(),
+    // );
   }
 }
 
@@ -102,6 +111,3 @@ class _MyHomeState extends State<MyHome> {
     );
   }
 }
-
-
-

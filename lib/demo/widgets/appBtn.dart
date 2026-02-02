@@ -1,6 +1,8 @@
 import 'package:demo/demo/home.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/size_utils.dart';
+
 class AppBtn extends StatelessWidget {
   final double? radius;
 
@@ -25,8 +27,8 @@ class AppBtn extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: .symmetric(horizontal: 20),
-        height: 50,
+        margin: .symmetric(horizontal: 15.h),
+        height: 55.v,
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(color: appColor),
@@ -39,7 +41,7 @@ class AppBtn extends StatelessWidget {
             text,
             style: TextStyle(
               color: isFill == true ? Colors.white : Colors.black,
-              fontSize: fontSize ?? 16,
+              fontSize: fontSize ?? 16.fSize,
             ),
           ),
         ),

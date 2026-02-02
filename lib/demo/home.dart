@@ -1,6 +1,7 @@
-import 'dart:developer';
-
+import 'package:demo/demo/utils/size_utils.dart';
 import 'package:demo/demo/widgets/appBtn.dart';
+import 'package:demo/demo/widgets/social_btn.dart';
+import 'package:demo/view/login.dart';
 import 'package:flutter/material.dart';
 
 Color appColor = Color(0xFFFF3022);
@@ -22,25 +23,30 @@ class HomeView extends StatelessWidget {
             children: [
               Text(
                 "Choose you!",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 24.fSize,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              SizedBox(height: 15),
+
+              // SizedBox(height: 15),
+              Gap.v(15),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 10.h),
                 child: Text(
                   "Easily browse nearby takeaways and explore menus from your favorite spots — all in one place.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.fSize,
                     color: Color.fromRGBO(74, 74, 74, 1),
                     fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
 
-              SizedBox(height: 25,),
+              Gap.v(20),
               Padding(
-                padding: .symmetric(horizontal: 15),
+                padding: .symmetric(horizontal: 10.h),
                 child: Row(
                   children: [
                     Expanded(
@@ -49,14 +55,14 @@ class HomeView extends StatelessWidget {
                         text: "Customer",
                       ),
                     ),
-                
+
                     Expanded(
                       child: ContainerWidget(
                         image: "assets/c2.png",
                         text: "Merchant",
                       ),
                     ),
-                
+
                     Expanded(
                       child: ContainerWidget(
                         image: "assets/c3.png",
@@ -71,6 +77,27 @@ class HomeView extends StatelessWidget {
 
           Spacer(),
 
+          SocialBtn(
+            image: 'assets/fb.png',
+            text: 'Sign In with Facebook',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return LoginView();
+                  },
+                ),
+              );
+            },
+          ),
+          Gap.v(10),
+          SocialBtn(
+            image: 'assets/google.png',
+            text: 'Sign In with Google',
+            onTap: () {},
+          ),
+          Gap.v(10),
           Column(
             children: [
               AppBtn(
@@ -79,7 +106,7 @@ class HomeView extends StatelessWidget {
                 color: appColor,
                 radius: 8,
               ),
-              SizedBox(height: 15),
+              Gap.v(15),
               AppBtn(
                 isFill: false,
                 text: "Continue as Guest?",
@@ -90,7 +117,7 @@ class HomeView extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 30),
+          Gap.v(20),
         ],
       ),
     );
@@ -105,8 +132,8 @@ class ContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: .symmetric(horizontal: 5),
-      padding: .symmetric(horizontal: 15,vertical: 15),
+      margin: .symmetric(horizontal: 5.h),
+      padding: .symmetric(horizontal: 10.h, vertical: 10.v),
       decoration: BoxDecoration(
         color: cColor,
         borderRadius: BorderRadius.circular(8),
@@ -114,9 +141,8 @@ class ContainerWidget extends StatelessWidget {
 
       child: Column(
         children: [
-          Image.asset(image,height: 45,width: 45,),
-
-          SizedBox(height: 10),
+          Image.asset(image, height: 35.h, width: 35.h),
+          Gap.v(10),
           Text(text, style: TextStyle(color: Colors.black)),
         ],
       ),
