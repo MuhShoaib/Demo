@@ -30,14 +30,14 @@ class _ProductViewState extends State<ProductView> {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
 
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return LoginView();
-                  },
-                ),
-              );
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return LoginView();
+              //     },
+              //   ),
+              // );
             },
             icon: Icon(Icons.logout),
           ),

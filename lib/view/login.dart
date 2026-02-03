@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+
+  final String name;
+  final double temp;
+  const LoginView({super.key, required this.name, required this.temp});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -33,20 +36,25 @@ class _LoginViewState extends State<LoginView> {
             ),
             ElevatedButton(
               onPressed: () {
-                createUserwithEmail(email: email.text, password: password.text).then((
-                  value,
-                ) {
-                  log(value.user.toString());
+                log(widget.name);
+                log(widget.temp.toString());
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ProductView();
-                      },
-                    ),
-                  );
-                });
+                // createUserwithEmail(email: email.text, password: password.text).then((
+                //   value,
+                // ) {
+                //   log(value.user.toString());
+                //
+                //   log(widget.name);
+                //
+                //   // Navigator.pushReplacement(
+                //   //   context,
+                //   //   MaterialPageRoute(
+                //   //     builder: (context) {
+                //   //       return ProductView();
+                //   //     },
+                //   //   ),
+                //   // );
+                // });
               },
               child: Text("Sign in with Email"),
             ),

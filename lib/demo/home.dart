@@ -81,11 +81,16 @@ class HomeView extends StatelessWidget {
             image: 'assets/fb.png',
             text: 'Sign In with Facebook',
             onTap: () {
+              String temp = "45.5";
+
+              double t = double.parse(temp);
+              int te = int.parse(temp);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return LoginView();
+                    return LoginView(name: 'Shoaib', temp: t);
                   },
                 ),
               );
