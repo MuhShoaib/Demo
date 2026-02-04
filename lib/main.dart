@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'album.dart';
 import 'demo/home.dart';
+import 'demo/stack_demo.dart';
 import 'demo/utils/size_utils.dart';
 import 'firebase_options.dart';
 
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
       builder: (context, orientation, deviceType) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: MaterialApp(debugShowCheckedModeBanner: false, home: HomeView()),
+        child: MaterialApp(debugShowCheckedModeBanner: false, home: StackDemo()),
       ),
     );
 
