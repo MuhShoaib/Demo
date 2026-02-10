@@ -1,3 +1,4 @@
+import 'package:demo/fastfood/views/splash.dart';
 import 'package:demo/view/api_view.dart';
 import 'package:demo/view/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       builder: (context, orientation, deviceType) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: MaterialApp(debugShowCheckedModeBanner: false, home: DailogView()),
+        child: MaterialApp(debugShowCheckedModeBanner: false, home: SplashView()),
       ),
     );
 
