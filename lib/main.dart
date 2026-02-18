@@ -15,6 +15,7 @@ import 'demo/utils/size_utils.dart';
 import 'demo/widgets/dialogs.dart';
 import 'fastfood/views/bottom_nav.dart';
 import 'fastfood/views/login.dart';
+import 'fastfood/views/tab_view.dart';
 import 'firebase_options.dart';
 
 Future<List<Album>> fetchAlbum() async {
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
       builder: (context, orientation, deviceType) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: MaterialApp(debugShowCheckedModeBanner: false, home: BottomNavView()),
+        child: MaterialApp(debugShowCheckedModeBanner: false, home: StackOver()),
       ),
     );
 
