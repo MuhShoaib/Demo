@@ -158,7 +158,6 @@ class _StackOverState extends State<StackOver>
                   // second tab [you can add an icon using the icon property]
                   Tab(text: 'Buy Now'),
 
-
                   Tab(text: 'Sell Now'),
                 ],
               ),
@@ -208,4 +207,3 @@ class _StackOverState extends State<StackOver>
     );
   }
 }
-

@@ -5,11 +5,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import 'dart:convert';
 
 import 'album.dart';
+import 'demo/file_picker_view.dart';
 import 'demo/home.dart';
+import 'demo/image_provider.dart';
 import 'demo/stack_demo.dart';
 import 'demo/utils/size_utils.dart';
 import 'demo/widgets/dialogs.dart';
@@ -49,7 +52,19 @@ class MyApp extends StatelessWidget {
       builder: (context, orientation, deviceType) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: MaterialApp(debugShowCheckedModeBanner: false, home: StackOver()),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) {
+                return ImagePickerProvider();
+              },
+            ),
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: ImagePickerView(),
+          ),
+        ),
       ),
     );
 
