@@ -1,3 +1,4 @@
+import 'package:demo/demo/state/counter_provider.dart';
 import 'package:demo/fastfood/views/splash.dart';
 import 'package:demo/view/api_view.dart';
 import 'package:demo/view/login.dart';
@@ -14,6 +15,8 @@ import 'demo/file_picker_view.dart';
 import 'demo/home.dart';
 import 'demo/image_provider.dart';
 import 'demo/stack_demo.dart';
+import 'demo/state/color_provider.dart';
+import 'demo/state/view.dart';
 import 'demo/utils/size_utils.dart';
 import 'demo/widgets/dialogs.dart';
 import 'fastfood/views/bottom_nav.dart';
@@ -59,10 +62,20 @@ class MyApp extends StatelessWidget {
                 return ImagePickerProvider();
               },
             ),
+
+            ChangeNotifierProvider(
+              create: (context) {
+                return CounterProvider();
+              },
+            ), ChangeNotifierProvider(
+              create: (context) {
+                return ColorProvider();
+              },
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: ImagePickerView(),
+            home: CounterView(),
           ),
         ),
       ),

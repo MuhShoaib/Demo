@@ -17,10 +17,7 @@ class ImagePickerView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             provider.imageFile != null
-                ? Image.file(
-              provider.imageFile!,
-              height: 200,
-            )
+                ? Image.file(provider.imageFile!, height: 200)
                 : const SizedBox(),
 
             const SizedBox(height: 20),
