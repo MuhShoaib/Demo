@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
             ),
           ],
           child: MaterialApp(
+            theme: ThemeData(fontFamily: "SfProDisplay"),
             debugShowCheckedModeBanner: false,
             home: CounterView(),
           ),

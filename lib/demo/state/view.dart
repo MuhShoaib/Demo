@@ -7,97 +7,290 @@ import 'package:provider/provider.dart';
 import '../utils/size_utils.dart';
 import 'color_provider.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _advancedDrawerController = AdvancedDrawerController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AdvancedDrawer(
+      backdrop: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.blueGrey, Colors.blueGrey.withOpacity(0.2)],
+          ),
+        ),
+      ),
+      controller: _advancedDrawerController,
+      animationCurve: Curves.easeInOut,
+      animationDuration: const Duration(milliseconds: 300),
+      animateChildDecoration: true,
+      rtlOpening: true,
+      // openScale: 1.0,
+      disabledGestures: false,
+      childDecoration: const BoxDecoration(
+        // NOTICE: Uncomment if you want to add shadow behind the page.
+        // Keep in mind that it may cause animation jerks.
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //     color: Colors.black12,
+        //     blurRadius: 0.0,
+        //   ),
+        // ],
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+      ),
+      child: Scaffold(
+
+        appBar: AppBar(
+          title: const Text('Advanced Drawer Example'),
+          leading: IconButton(
+            onPressed: _handleMenuButtonPressed,
+            icon: ValueListenableBuilder<AdvancedDrawerValue>(
+              valueListenable: _advancedDrawerController,
+              builder: (_, value, __) {
+                return Icon(
+                  value.visible ? Icons.clear : Icons.menu,
+                  key: ValueKey<bool>(value.visible),
+                );
+              },
+            ),
+          ),
+        ),
+        body: Container(),
+      ),
+      drawer: SafeArea(
+        child: Container(
+          child: ListTileTheme(
+            textColor: Colors.white,
+            iconColor: Colors.white,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  width: 128.0,
+                  height: 128.0,
+                  margin: const EdgeInsets.only(top: 24.0, bottom: 64.0),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    color: Colors.black26,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.asset('assets/images/flutter_logo.png'),
+                ),
+                ListTile(
+                  onTap: () {},
+                  leading: Icon(Icons.home),
+                  title: Text('Home'),
+                ),
+                ListTile(
+                  onTap: () {},
+                  leading: Icon(Icons.account_circle_rounded),
+                  title: Text('Profile'),
+                ),
+                ListTile(
+                  onTap: () {},
+                  leading: Icon(Icons.favorite),
+                  title: Text('Favourites'),
+                ),
+                ListTile(
+                  onTap: () {},
+                  leading: Icon(Icons.settings),
+                  title: Text('Settings'),
+                ),
+                Spacer(),
+                DefaultTextStyle(
+                  style: TextStyle(fontSize: 12, color: Colors.white54),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text('Terms of Service | Privacy Policy'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _handleMenuButtonPressed() {
+    // NOTICE: Manage Advanced Drawer state through the Controller.
+    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
+    _advancedDrawerController.showDrawer();
+  }
+}
+
 class CounterView extends StatelessWidget {
-  const CounterView({super.key});
+  final _advancedDrawerController = AdvancedDrawerController();
+  CounterView({super.key});
 
   @override
   Widget build(BuildContext context) {
     // final counterProvider = Provider.of<CounterProvider>(context);
     return Consumer<CounterProvider>(
       builder: (context, value, child) {
-        return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              value.increment();
-            },
-            child: Icon(Icons.add),
+        return AdvancedDrawer(
+          drawer: SafeArea(
+            child: Container(
+              child: ListTileTheme(
+                textColor: Colors.white,
+                iconColor: Colors.white,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: 128.0,
+                      height: 128.0,
+                      margin: const EdgeInsets.only(top: 24.0, bottom: 64.0),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        color: Colors.black26,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset('assets/images/flutter_logo.png'),
+                    ),
+                    ListTile(
+                      onTap: () {},
+                      leading: Icon(Icons.home),
+                      title: Text('Home'),
+                    ),
+                    ListTile(
+                      onTap: () {},
+                      leading: Icon(Icons.account_circle_rounded),
+                      title: Text('Profile'),
+                    ),
+                    ListTile(
+                      onTap: () {},
+                      leading: Icon(Icons.favorite),
+                      title: Text('Favourites'),
+                    ),
+                    ListTile(
+                      onTap: () {},
+                      leading: Icon(Icons.settings),
+                      title: Text('Settings'),
+                    ),
+                    Spacer(),
+                    DefaultTextStyle(
+                      style: TextStyle(fontSize: 12, color: Colors.white54),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: Text('Terms of Service | Privacy Policy'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          backdrop: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Colors.blueGrey, Colors.blueGrey.withOpacity(0.2)],
+              ),
+            ),
+          ),
+          controller: _advancedDrawerController,
+          animationCurve: Curves.easeInOut,
+          animationDuration: const Duration(milliseconds: 300),
+          animateChildDecoration: true,
+          rtlOpening: false,
+          // openScale: 1.0,
+          disabledGestures: false,
+          childDecoration: const BoxDecoration(
+            // NOTICE: Uncomment if you want to add shadow behind the page.
+            // Keep in mind that it may cause animation jerks.
+            // boxShadow: <BoxShadow>[
+            //   BoxShadow(
+            //     color: Colors.black12,
+            //     blurRadius: 0.0,
+            //   ),
+            // ],
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
           ),
 
-          body: Center(
-            child: Column(
-              mainAxisAlignment: .center,
-              children: [
-                Text(value.count.toString(), style: TextStyle(fontSize: 30)),
-
-                FloatingActionButton(
-                  onPressed: () {
-                    value.decrement();
+          child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: _handleMenuButtonPressed,
+                icon: ValueListenableBuilder<AdvancedDrawerValue>(
+                  valueListenable: _advancedDrawerController,
+                  builder: (_, value, __) {
+                    return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 250),
+                      child: Semantics(
+                        label: 'Menu',
+                        onTapHint: 'expand drawer',
+                        child: Icon(
+                          value.visible ? Icons.clear : Icons.menu,
+                          key: ValueKey<bool>(value.visible),
+                        ),
+                      ),
+                    );
                   },
-                  child: Icon(Icons.minimize),
                 ),
-              ],
+              ),
+            ),
+
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                value.increment();
+              },
+              child: Icon(Icons.add),
+            ),
+
+            body: Center(
+              child: Column(
+                mainAxisAlignment: .center,
+                children: [
+                  Text(value.count.toString(), style: TextStyle(fontSize: 30)),
+
+                  FloatingActionButton(
+                    onPressed: () {
+                      value.decrement();
+                    },
+                    child: Icon(Icons.minimize),
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
     );
   }
-}
 
-// class ColorView extends StatelessWidget {
-//   const ColorView({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final colorProvider = Provider.of<ColorProvider>(context);
-//     return Scaffold(
-//       appBar: AppBar(),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: .center,
-//           children: [
-//             Container(
-//               height: 100,
-//               width: 200,
-//               color: colorProvider.selectedColor,
-//             ),
-//
-//             SizedBox(
-//               height: 100,
-//               child: ListView.builder(
-//                 scrollDirection: Axis.horizontal,
-//                 itemCount: colorProvider.colors.length,
-//                 itemBuilder: (context, index) {
-//                   return Center(
-//                     child: InkWell(
-//                       onTap: () {
-//                         colorProvider.updateColor(index);
-//                       },
-//                       child: Container(
-//                         margin: .symmetric(horizontal: 5.h),
-//                         width: 30,
-//                         height: 30,
-//                         decoration: BoxDecoration(
-//                           border:
-//                               colorProvider.selectedColor ==
-//                                   colorProvider.colors[index]
-//                               ? Border.all(color: Colors.black)
-//                               : null,
-//                           shape: BoxShape.circle,
-//                           color: colorProvider.colors[index],
-//                         ),
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  void _handleMenuButtonPressed() {
+    // NOTICE: Manage Advanced Drawer state through the Controller.
+    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
+    _advancedDrawerController.showDrawer();
+  }
+
+  Widget _drawerItem({required String text}) {
+    return Row(
+      children: [
+        Icon(Icons.home),
+
+        Gap.h(10),
+        Text(text, style: TextStyle(fontSize: 20.fSize)),
+      ],
+    );
+  }
+}
 
 class ColorView extends StatelessWidget {
   const ColorView({super.key});
