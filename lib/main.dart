@@ -1,3 +1,4 @@
+import 'package:demo/demo/api/view.dart';
 import 'package:demo/demo/state/counter_provider.dart';
 import 'package:demo/fastfood/views/splash.dart';
 import 'package:demo/view/api_view.dart';
@@ -41,7 +42,7 @@ Future<List<Album>> fetchAlbum() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -76,7 +77,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             theme: ThemeData(fontFamily: "SfProDisplay"),
             debugShowCheckedModeBanner: false,
-            home: CounterView(),
+            home: PostView(),
           ),
         ),
       ),
