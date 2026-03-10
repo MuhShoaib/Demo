@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:demo/demo/api/post.dart';
 import 'package:demo/demo/api/serivce.dart';
 import 'package:flutter/material.dart';
@@ -68,28 +71,28 @@ import 'package:flutter/material.dart';
 //   }
 // }
 
-class PostView extends StatefulWidget {
-  const PostView({super.key});
+class ProductView extends StatefulWidget {
+  const ProductView({super.key});
 
   @override
-  State<PostView> createState() => _PostViewState();
+  State<ProductView> createState() => _ProductViewState();
 }
 
-class _PostViewState extends State<PostView> {
-  late Future<List<Post>> futurePost;
+class _ProductViewState extends State<ProductView> {
+  late Future<Product> futureProduct;
 
   @override
   void initState() {
     super.initState();
-    futurePost = fetchAllPost();
+    futureProduct = fetchProducts();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Posts")),
-      body: FutureBuilder<List<Post>>(
-        future: futurePost,
+      appBar: AppBar(title: const Text("Products")),
+      body: FutureBuilder<Product>(
+        future: futureProduct,
         builder: (context, snapshot) {
           // Loading
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -103,17 +106,26 @@ class _PostViewState extends State<PostView> {
 
           // Data
           if (snapshot.hasData) {
-            final posts = snapshot.data!;
+            final products = snapshot.data!;
 
             return ListView.builder(
-              itemCount: posts.length,
+              itemCount: products.products.length,
               itemBuilder: (context, index) {
-                final post = posts[index];
+                final product = products.products[index];
 
-                return ListTile(
-                  leading: Text(post.id.toString()),
-                  title: Text(post.title),
-                  subtitle: Text(post.body),
+                return InkWell(
+                  onTap: (){
+
+
+                    log(product.price.toString());
+                  },
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(product.thumbnail),
+                    ),
+                    title: Text(product.title),
+                    subtitle: Text(product.category),
+                  ),
                 );
               },
             );

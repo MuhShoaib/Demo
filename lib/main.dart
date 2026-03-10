@@ -1,10 +1,5 @@
 import 'package:demo/demo/api/view.dart';
 import 'package:demo/demo/state/counter_provider.dart';
-import 'package:demo/fastfood/views/splash.dart';
-import 'package:demo/view/api_view.dart';
-import 'package:demo/view/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -77,7 +72,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             theme: ThemeData(fontFamily: "SfProDisplay"),
             debugShowCheckedModeBanner: false,
-            home: PostView(),
+            home: ProductView(),
           ),
         ),
       ),
