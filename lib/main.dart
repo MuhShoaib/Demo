@@ -1,5 +1,7 @@
 import 'package:demo/demo/api/view.dart';
 import 'package:demo/demo/state/counter_provider.dart';
+import 'package:demo/demo/state/product_provider.dart';
+import 'package:demo/view/api_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -68,11 +70,17 @@ class MyApp extends StatelessWidget {
                 return ColorProvider();
               },
             ),
+
+            ChangeNotifierProvider(
+              create: (context) {
+                return ProductProvider();
+              },
+            ),
           ],
           child: MaterialApp(
             theme: ThemeData(fontFamily: "SfProDisplay"),
             debugShowCheckedModeBanner: false,
-            home: ProductView(),
+            home: ProductScreen(),
           ),
         ),
       ),

@@ -64,14 +64,14 @@ class _LoginViewState extends State<LoginView> {
                 signInWithGoogle().then((value) {
                   log(value.user.toString());
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ProductView();
-                      },
-                    ),
-                  );
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) {
+                  //       return ProductView();
+                  //     },
+                  //   ),
+                  // );
                 });
               },
               child: Text("Sign in with Google"),
