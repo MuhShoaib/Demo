@@ -40,6 +40,8 @@ dependencies:
   google_sign_in: ^6.3.0
   provider:
   image_picker:
+  geocoding:
+  shared_preferences:
   flutter_advanced_drawer: ^1.5.0
 
 dev_dependencies:

@@ -295,6 +295,7 @@
 
 // lib/screens/product_screen.dart
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 import '../demo/state/product_provider.dart';
 import '../model/product.dart' show Product;
@@ -315,6 +316,7 @@ class _ProductScreenState extends State<ProductScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 0, vsync: this);
+
     _initializeData();
   }
 
@@ -329,6 +331,24 @@ class _ProductScreenState extends State<ProductScreen>
       productProvider.fetchProducts(),
       productProvider.fetchCategories(),
     ]);
+    List<Location> locations = await locationFromAddress(
+      "Multan, Punjab, Pakistan",
+    );
+
+    print(locations.first.latitude);
+    print(locations.first.longitude);
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      30.1575,
+      71.5249,
+    );
+
+    Placemark place = placemarks.first;
+
+    print(place.name);
+    print(place.locality); // City
+    print(place.administrativeArea); // Province
+    print(place.country);
 
     // Update tab controller with categories count
     setState(() {
@@ -481,7 +501,7 @@ class _ProductScreenState extends State<ProductScreen>
                   padding: const EdgeInsets.all(16),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.7,
+                    childAspectRatio: 0.6,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
                   ),

@@ -2,6 +2,7 @@ import 'package:demo/demo/api/view.dart';
 import 'package:demo/demo/state/counter_provider.dart';
 import 'package:demo/demo/state/product_provider.dart';
 import 'package:demo/view/api_view.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ import 'fastfood/views/bottom_nav.dart';
 import 'fastfood/views/login.dart';
 import 'fastfood/views/tab_view.dart';
 import 'firebase_options.dart';
+import 'form.dart';
 
 Future<List<Album>> fetchAlbum() async {
   final response = await http.get(
@@ -39,7 +41,7 @@ Future<List<Album>> fetchAlbum() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             theme: ThemeData(fontFamily: "SfProDisplay"),
             debugShowCheckedModeBanner: false,
-            home: ProductScreen(),
+            home: SplashDecider(),
           ),
         ),
       ),
