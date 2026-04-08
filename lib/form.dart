@@ -1,10 +1,9 @@
 import 'dart:developer';
 
+import 'package:demo/service/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 /// Decide initial screen based on SharedPreferences
 class SplashDecider extends StatefulWidget {
@@ -39,6 +38,9 @@ class _SplashDeciderState extends State<SplashDecider> {
   }
 }
 
+
+
+
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -53,11 +55,6 @@ class _AuthScreenState extends State<AuthScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
-
-  Future<void> _saveLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLogin', true);
-  }
 
   Future<void> _handleAuth() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
@@ -77,27 +74,20 @@ class _AuthScreenState extends State<AuthScreen> {
         );
 
         log(value.user!.uid);
-        await _saveLogin();
-
-        _goToHome();
       } else {
-        final value = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final value = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
 
         await value.user?.updateDisplayName(nameController.text.trim());
-        await _saveLogin();
-
-        _goToHome();
       }
+
+      _goToHome();
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message ?? "Auth Error")),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Something went wrong")),
       );
     }
 
@@ -111,6 +101,28 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  Future<void> _handleGoogleLogin() async {
+    setState(() => isLoading = true);
+
+    try {
+      final user = await GoogleAuthService().signInWithGoogle();
+
+      if (user != null) {
+        log("Name: ${user.phoneNumber}");
+        log("Email: ${user.email}");
+        log("Photo: ${user.photoURL}");
+
+        _goToHome();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Google Sign-In Failed")),
+      );
+    }
+
+    setState(() => isLoading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,8 +133,9 @@ class _AuthScreenState extends State<AuthScreen> {
             children: [
               Text(
                 isLogin ? "Login" : "Sign Up",
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 28),
               ),
+
               const SizedBox(height: 20),
 
               if (!isLogin)
@@ -135,9 +148,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
               ElevatedButton(
                 onPressed: isLoading ? null : _handleAuth,
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                ),
                 child: isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : Text(isLogin ? "Login" : "Sign Up"),
@@ -145,16 +155,19 @@ class _AuthScreenState extends State<AuthScreen> {
 
               const SizedBox(height: 10),
 
+              ElevatedButton(
+                onPressed: isLoading ? null : _handleGoogleLogin,
+                child: const Text("Sign In with Google"),
+              ),
+
               TextButton(
                 onPressed: () {
-                  setState(() {
-                    isLogin = !isLogin;
-                  });
+                  setState(() => isLogin = !isLogin);
                 },
                 child: Text(
                   isLogin
-                      ? "Don't have an account? Sign Up"
-                      : "Already have an account? Login",
+                      ? "Don't have account? Sign Up"
+                      : "Already have account? Login",
                 ),
               ),
             ],
@@ -164,8 +177,12 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Widget _buildField(TextEditingController controller, String hint, IconData icon,
-      {bool isPassword = false}) {
+  Widget _buildField(
+      TextEditingController controller,
+      String hint,
+      IconData icon, {
+        bool isPassword = false,
+      }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextField(
@@ -182,15 +199,221 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
+// class AuthScreen extends StatefulWidget {
+//   const AuthScreen({super.key});
+//
+//   @override
+//   State<AuthScreen> createState() => _AuthScreenState();
+// }
+//
+// class _AuthScreenState extends State<AuthScreen> {
+//   bool isLogin = true;
+//   bool isLoading = false;
+//
+//   final emailController = TextEditingController();
+//   final passwordController = TextEditingController();
+//   final nameController = TextEditingController();
+//
+//   Future<void> _saveLogin() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     await prefs.setBool('isLogin', true);
+//   }
+//
+//   Future<void> _handleAuth() async {
+//     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+//       ScaffoldMessenger.of(
+//         context,
+//       ).showSnackBar(const SnackBar(content: Text("Fields cannot be empty")));
+//       return;
+//     }
+//
+//     setState(() => isLoading = true);
+//
+//     try {
+//       if (isLogin) {
+//         final value = await FirebaseAuth.instance.signInWithEmailAndPassword(
+//           email: emailController.text.trim(),
+//           password: passwordController.text.trim(),
+//         );
+//
+//         log(value.user!.uid);
+//         await _saveLogin();
+//
+//         _goToHome();
+//       } else {
+//         final value = await FirebaseAuth.instance
+//             .createUserWithEmailAndPassword(
+//               email: emailController.text.trim(),
+//               password: passwordController.text.trim(),
+//             );
+//
+//         await value.user?.updateDisplayName(nameController.text.trim());
+//         await _saveLogin();
+//
+//         _goToHome();
+//       }
+//     } on FirebaseAuthException catch (e) {
+//       ScaffoldMessenger.of(
+//         context,
+//       ).showSnackBar(SnackBar(content: Text(e.message ?? "Auth Error")));
+//     } catch (e) {
+//       ScaffoldMessenger.of(
+//         context,
+//       ).showSnackBar(const SnackBar(content: Text("Something went wrong")));
+//     }
+//
+//     setState(() => isLoading = false);
+//   }
+//
+//   void _goToHome() {
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (_) => const HomeScreen()),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: SingleChildScrollView(
+//           padding: const EdgeInsets.all(20),
+//           child: Column(
+//             children: [
+//               Text(
+//                 isLogin ? "Login" : "Sign Up",
+//                 style: const TextStyle(
+//                   fontSize: 28,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               const SizedBox(height: 20),
+//
+//               if (!isLogin) _buildField(nameController, "Name", Icons.person),
+//
+//               _buildField(emailController, "Email", Icons.email),
+//               _buildField(
+//                 passwordController,
+//                 "Password",
+//                 Icons.lock,
+//                 isPassword: true,
+//               ),
+//
+//               const SizedBox(height: 20),
+//
+//               ElevatedButton(
+//                 onPressed: isLoading ? null : _handleAuth,
+//                 style: ElevatedButton.styleFrom(
+//                   minimumSize: const Size(double.infinity, 50),
+//                 ),
+//                 child: isLoading
+//                     ? const CircularProgressIndicator(color: Colors.white)
+//                     : Text(isLogin ? "Login" : "Sign Up"),
+//               ),
+//
+//               const SizedBox(height: 10),
+//
+//               ElevatedButton(
+//                 onPressed: () async {
+//                   await GoogleAuthService().signInWithGoogle().then((val) {
+//                     log(val!.displayName!);
+//                     log(val.photoURL!);
+//                   });
+//                 },
+//                 style: ElevatedButton.styleFrom(
+//                   minimumSize: const Size(double.infinity, 50),
+//                 ),
+//                 child: isLoading
+//                     ? const CircularProgressIndicator(color: Colors.white)
+//                     : Text("Sign In with Google"),
+//               ),
+//               TextButton(
+//                 onPressed: () {
+//                   setState(() {
+//                     isLogin = !isLogin;
+//                   });
+//                 },
+//                 child: Text(
+//                   isLogin
+//                       ? "Don't have an account? Sign Up"
+//                       : "Already have an account? Login",
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget _buildField(
+//     TextEditingController controller,
+//     String hint,
+//     IconData icon, {
+//     bool isPassword = false,
+//   }) {
+//     return Padding(
+//       padding: const EdgeInsets.only(bottom: 15),
+//       child: TextField(
+//         controller: controller,
+//         obscureText: isPassword,
+//         decoration: InputDecoration(
+//           prefixIcon: Icon(icon),
+//           hintText: hint,
+//           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class HomeScreen extends StatelessWidget {
+//   const HomeScreen({super.key});
+//
+//   Future<void> _logout(BuildContext context) async {
+//     await FirebaseAuth.instance.signOut();
+//
+//     final prefs = await SharedPreferences.getInstance();
+//     await prefs.setBool('isLogin', false);
+//
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (_) => const AuthScreen()),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final user = FirebaseAuth.instance.currentUser;
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Home"),
+//         actions: [
+//           IconButton(
+//             onPressed: () => _logout(context),
+//             icon: const Icon(Icons.logout),
+//           ),
+//         ],
+//       ),
+//       body: Center(
+//         child: Text(
+//           "Welcome\n${user?.email ?? ''}",
+//           textAlign: TextAlign.center,
+//           style: const TextStyle(fontSize: 20),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Future<void> _logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLogin', false);
 
     Navigator.pushReplacement(
       context,
@@ -213,10 +436,39 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text(
-          "Welcome\n${user?.email ?? ''}",
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            /// 👇 Profile Image
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: user?.photoURL != null
+                  ? NetworkImage(user!.photoURL!)
+                  : null,
+              child: user?.photoURL == null
+                  ? const Icon(Icons.person, size: 50)
+                  : null,
+            ),
+
+            const SizedBox(height: 20),
+
+            /// 👇 Name
+            Text(
+              user?.displayName ?? "No Name",
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            /// 👇 Email
+            Text(
+              user?.email ?? "",
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
         ),
       ),
     );
