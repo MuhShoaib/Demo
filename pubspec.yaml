@@ -37,7 +37,9 @@ dependencies:
   http: ^1.6.0
   firebase_core:
   firebase_auth:
+  cloud_firestore:
   google_sign_in: ^6.3.0
+  curved_navigation_bar: ^1.0.6
   provider:
   image_picker:
   geocoding:

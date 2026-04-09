@@ -1,6 +1,7 @@
 import 'package:demo/demo/api/view.dart';
 import 'package:demo/demo/state/counter_provider.dart';
 import 'package:demo/demo/state/product_provider.dart';
+import 'package:demo/firebase/screens/auth_screen.dart';
 import 'package:demo/view/api_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             theme: ThemeData(fontFamily: "SfProDisplay"),
             debugShowCheckedModeBanner: false,
-            home: SplashDecider(),
+            home: AuthScreen(),
           ),
         ),
       ),
